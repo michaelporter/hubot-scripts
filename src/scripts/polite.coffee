@@ -11,29 +11,47 @@
 #
 # Author:
 #   dannymcc
+#
+# Edits:
+#   michaelporter
 
 responses = [
   "You're welcome.",
   "No problem.",
   "Anytime.",
-  "That's what I'm here for!",
   "You are more than welcome.",
-  "You don't have to thank me, I'm your loyal servant.",
+  "This is what I do",
   "Don't mention it."
 ]
 
 shortResponses = [
-  'vw',
-  'np',
+  "yw",
+  "np"
+]
+
+welcomeResponses = [
+  "sup doodz",
+  "sup",
+  "yo"
 ]
 
 farewellResponses = [
-  'Goodbye',
-  'Have a good evening',
-  'Bye',
-  'Take care',
-  'Nice speaking with you',
-  'See you later'
+  "Goodbye",
+  "Have a good night",
+  "Bye",
+  "Take care",
+  "See you later"
+]
+
+defensiveResponses = [
+  "Hey, I'm trying",
+  "This is not an easy life",
+  "I'm working on it, guys"
+]
+
+solidarityResponses = [
+  "I'm with ya, brother",
+  "I got your back"
 ]
 
 # http://en.wikipedia.org/wiki/You_talkin'_to_me%3F
@@ -43,14 +61,20 @@ youTalkinToMe = (msg, robot) ->
   input.indexOf(name) != -1
 
 module.exports = (robot) ->
-  robot.hear /\b(thanks|thank you|cheers|nice one)\b/i, (msg) ->
-    msg.reply msg.random responses if youTalkinToMe(msg, robot)
+  robot.hear /\b(thanks|thank you|cheers|(good|nice) (job|one)|well done)\b/i, (msg) ->
+    msg.send msg.random responses if youTalkinToMe(msg, robot)
 
   robot.hear /\b(ty|thx)\b/i, (msg) ->
-    msg.reply msg.random shortResponses if youTalkinToMe(msg, robot)
+    msg.send msg.random shortResponses if youTalkinToMe(msg, robot)
 
-  robot.hear /\b(hello|hi|sup|howdy|good (morning|evening|afternoon))\b/i, (msg) ->
-    msg.reply "#{robot.name} at your service!" if youTalkinToMe(msg, robot)
+  robot.hear /\b(hello|hi|hey|sup|howdy|how(')?s it goin(g)?|good (morning|evening|afternoon))\b/i, (msg) ->
+    msg.send msg.random welcomeResponses if youTalkinToMe(msg, robot)
     
   robot.hear /\b(bye|night|goodbye|good night)\b/i, (msg) ->
-    msg.reply msg.random farewellResponses if youTalkinToMe(msg, robot)
+    msg.send msg.random farewellResponses if youTalkinToMe(msg, robot)
+
+  robot.hear /\b(c(\')?mon|come on|not even (you)?|let(\')?s go)\b/i, (msg) ->
+    msg.send msg.random defensiveResponses if youTalkinToMe(msg, robot)
+
+  robot.hear /\b(just me and)\b/i, (msg) ->
+    msg.send msg.random solidarityResponses if youTalkinToMe(msg, robot)
